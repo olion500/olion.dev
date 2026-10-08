@@ -1,95 +1,94 @@
 # olion Design Specification
 
-> `oiloil-ui-ux-guide`의 `design` 상담으로 정했다 (2026-10-08).
-> Style family: `editorial` 기반, 글꼴은 Pretendard 단일로 바꿈.
+> `oiloil-ui-ux-guide`의 `design` 상담과 `oil-ui` 시안 작업으로 정했다 (2026-10-08).
+> Style family: `editorial` 기반, 글꼴은 Pretendard 하나만 쓴다.
+> 구현: `site/index.html`
 
 ## 1. Design direction
 
-- **Product**: olion(olion.dev) 회사 랜딩페이지. 개인의 하루에 맞춘 도구를 만드는 회사를 소개하고 소식을 받을 사람을 모은다.
-- **Concept**: 정체성은 "한 사람을 위한 소프트웨어", 메인 카피는 "좋아하는 일엔 더 오래, 귀찮은 일은 맡기세요". 제품 예시는 "당신이 하는 일 / 맡겨도 되는 일"로 나눠 보여준다.
-- **Products**: 이름과 화면을 공개하지 않는다. 다루는 영역만 보이고 모두 "준비중"으로 표시한다.
-- **Style family**: `editorial`(미색 바탕, 선으로 나누는 구획, 넉넉한 여백, 절제된 강조색). 단, 명조 대신 **Pretendard 하나만** 쓴다(사용자 결정). 명조가 빠진 만큼 잡지 느낌은 굵은 가로선, 크기 대비, 여백으로 낸다.
-- **References**: 없음. 스타일 비교 페이지에서 C(잡지 같은 편집)를 골랐다.
-- **Tone**: 차분함, 단정함, 사람 중심
-- **Hard constraints**: 다크 모드 지원, 모바일 대응(16px 좌우 여백, 가로 스크롤 없음), 본문 텍스트 WCAG AA 대비
-- **Locale**: primary `en` (2026-10-08 영어로 변경), secondary 없음
+- **Product**: olion.dev 회사 랜딩페이지. 회사가 일하는 원칙을 보여주고, 소식을 받을 사람을 모은다.
+- **Concept**: "Software for one." — 한 번에 한 사람을 위한 소프트웨어. 메인 카피는 "More time for what you love. Leave the chores to us."
+- **Structure**: 37signals처럼 원칙 목록이 페이지의 중심이다. 원칙은 번호 붙은 아코디언(00–06)으로 보여준다.
+- **Products**: 이름만 공개하고 모두 "Coming soon"으로 표시한다. 스크린샷과 기능 상세는 보여주지 않는다.
+  - A Little Brew — For your morning cup
+  - Backtest — For your money rules
+  - Homeward — For the home you'll find
+- **Style family**: `editorial`(미색 바탕, 선으로 나누는 구획, 넉넉한 여백, 절제된 강조색). 명조 대신 Pretendard만 쓰고, 잡지 느낌은 굵은 가로선과 크기 대비, 여백으로 낸다.
+- **References**: 37signals.com(원칙 목록 구조와 짧은 글), mymind(두 박자 슬로건)
+- **Tone**: 차분함, 단정함, 짧고 단정한 문장
+- **Hard constraints**: 다크 모드 지원, 모바일 대응(16px 좌우 여백, 가로 스크롤 없음), 본문 텍스트 WCAG AA 대비, 외부 CDN 없이 열림(글꼴·스크립트 self-host)
+- **Locale**: primary `en`, secondary 없음
 
 ## 2. Color
 
 ### Brand
-- `--color-primary`: `#a3301f` — 짙은 빨강. 링크, CTA 글자, 작은 라벨, 비교표 라벨에만 쓴다. 면(배경)으로 깔지 않는다. 대비 6.7:1
-- `--color-primary-hover`: `#7f2517`
-- `--color-primary-subtle`: `#f4e6e2` — 선택 영역(::selection) 정도에만
-- `--color-secondary`: N/A — 강조색은 하나만 쓴다
+- `--accent`: `#a3301f` — 짙은 빨강. 링크, CTA, 열린 아코디언 행, 히어로의 "one."에만 쓴다. 면(배경)으로 깔지 않는다. 대비 6.7:1
+- `--accent-hover`: `#7f2517`
+- Secondary: 없음 — 강조색은 하나만 쓴다
 
 ### Neutrals (따뜻한 회색 쪽)
-- `--color-bg`: `#fbfaf7`
-- `--color-surface`: N/A — 면을 나누지 않고 선으로 나눈다
-- `--color-rule-strong`: `#161513` — 섹션·표 시작의 2px 굵은 선
-- `--color-border`: `#d8d3c9` — 1px 얇은 구분선
-- `--color-text`: `#161513` (17.5:1)
-- `--color-text-secondary`: `#5e5a53` (6.6:1)
-- `--color-text-muted`: `#757068` (4.7:1) — "준비중", 각주, 보조 라벨
+- `--bg`: `#fbfaf7`
+- `--rule-strong`: `#161513` — 섹션·목록 시작의 2px 굵은 선, 상단바 아래 선
+- `--rule`: `#d8d3c9` — 1px 얇은 구분선
+- `--text`: `#161513` (17.5:1)
+- `--text-2`: `#5e5a53` (6.6:1) — 보조 문장, 아이콘 기본색
+- `--muted`: `#757068` (4.7:1) — 번호, 라벨, "Coming soon", 각주
 
 ### Semantic
-- `--color-success`: `#2f6b3f`
-- `--color-warning`: `#8a5a00`
-- `--color-error`: `#b42318` — 강조색과 색이 비슷하므로 오류는 색만으로 알리지 않고 항상 문구를 함께 쓴다
-- `--color-info`: `#1f4e79`
+지금 페이지에는 쓰지 않는다. 입력 폼을 붙일 때 아래 값을 쓴다.
+- success `#2f6b3f` · warning `#8a5a00` · error `#b42318` · info `#1f4e79`
+- error는 강조색과 색이 비슷하므로 오류는 색만으로 알리지 않고 항상 문구를 함께 쓴다.
 
 ### Dark mode
-시스템 설정을 따르고, 수동 전환도 지원한다(`data-theme="light|dark"`).
+시스템 설정을 따르고, 상단바 아이콘으로 수동 전환한다(`data-theme="light|dark"`).
 
-- `--color-bg`: `#151412`
-- `--color-rule-strong`: `#ecebe7`
-- `--color-border`: `#3a3833`
-- `--color-text`: `#ecebe7` (15.4:1)
-- `--color-text-secondary`: `#a8a49c` (7.4:1)
-- `--color-text-muted`: `#8c887f` (5.2:1)
-- `--color-primary`: `#e27a64` (6.3:1) — 어두운 바탕에서 읽히도록 밝힌 빨강
-- `--color-primary-hover`: `#ec9682`
-- `--color-primary-subtle`: `#3a201b`
-- `--color-success`: `#6fbf87` · `--color-warning`: `#e0b25a` · `--color-error`: `#f08a7e` · `--color-info`: `#7fb2e5`
+- `--bg` `#151412` · `--rule-strong` `#ecebe7` · `--rule` `#3a3833`
+- `--text` `#ecebe7` (15.4:1) · `--text-2` `#a8a49c` (7.4:1) · `--muted` `#8c887f` (5.2:1)
+- `--accent` `#e27a64` (6.3:1) · `--accent-hover` `#ec9682`
+- dark semantic: success `#6fbf87` · warning `#e0b25a` · error `#f08a7e` · info `#7fb2e5`
 
 ## 3. Typography
 
 | Role | Font | Weights | Source |
 |---|---|---|---|
-| Heading | Pretendard | 700, 800 | jsDelivr `orioncactus/pretendard@v1.3.9` (static) 또는 self-host |
-| Body | Pretendard | 400, 500, 600 | 동일 |
-| Mono | N/A | — | 코드 샘플이 없음 |
+| 전체 | Pretendard Variable | 400–800 | `site/fonts/PretendardVariable.woff2` (self-host, pretendard@1.3.9) |
 
 - **이탤릭 금지.** 강조는 굵기와 색으로만 한다.
-- **밑줄 금지.** 링크도 밑줄 없이 강조색 글자로 표시한다(§8).
-- 한국어 줄바꿈: `word-break: keep-all`.
+- **밑줄 금지.** 링크도 밑줄 없이 강조색 글자로 표시한다.
+- 숫자 번호는 `font-variant-numeric: tabular-nums`.
 
-### Type scale (px)
-12 / 13 / 14 / 16 / 18 / 20 / 28 / 36 / 48 / 60
-
-- Hero 제목: `clamp(36px, 6vw, 60px)`, 700, letter-spacing `-0.03em`, line-height 1.2
-- 섹션 제목: 28px, 700, `-0.02em`
-- 리드 문단: 18px, `--color-text-secondary`
-- 본문: 16px / 라벨: 12–13px, 600, letter-spacing `0.06–0.08em`
+### Type scale
+| 용도 | 크기 | 굵기 / 자간 |
+|---|---|---|
+| 히어로 제목 | `clamp(56px, 10vw, 128px)`, line-height .98 | 800 / `-0.055em` |
+| 히어로 문구 | `clamp(22px, 2.4vw, 30px)` | 650 / `-0.025em` |
+| 아코디언 행 | `clamp(24px, 3.2vw, 40px)` | 700 / `-0.035em` |
+| 섹션 제목 | `clamp(30px, 3.6vw, 46px)` | 750 / `-0.04em` |
+| 제품 이름 | 22px (모바일 17px) | 700 |
+| 본문 | 19px (모바일 17px), line-height 1.7 | 400 |
+| CTA | 17px | 600 |
+| 각주·설명 | 14–15px | 500 |
+| 번호·라벨 | 13–15px, 라벨은 대문자 `0.08em` | 600–700 |
+| 로고 "olion.dev" | 21px | 800 / `-0.03em` |
 
 ### Body measure
-- 리드·본문 문단 최대 폭 `34em`(한글 기준 한 줄 약 34자)
-- Line-height: 본문 1.7, 제목 1.2–1.3
+- 원칙 본문 최대 폭 `36em`
+- 문장 규칙: 한 문장에 하나의 생각, 메타 담화 없음, 주어는 "we"로 통일
 
 ## 4. Spacing
 
 - Base unit: `4px`
-- Allowed scale: `4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96`
+- Allowed scale: `4 / 8 / 16 / 20 / 24 / 28 / 36 / 40 / 64 / 96`
 - Density: `spacious`
-- 섹션 위아래: 데스크톱 96px, 모바일(≤600px) 64px
-- 콘텐츠 최대 폭 960px, 좌우 여백 24px(모바일 16px)
-- 스케일 밖의 값은 코드 주석에 이유를 적는다.
+- 섹션 위아래: 데스크톱 96px, 모바일(≤760px) 64px
+- 콘텐츠 최대 폭 1120px, 좌우 여백 40px(모바일 16px)
+- 번호 칸 폭 `--num`: 88px(모바일 44px)
 
 ## 5. Radius
 
-- `--radius-sm`: `2px` — 포커스 링
-- `--radius-md`: `4px` — 작은 버튼(테마 전환 등), 입력창
-- `--radius-lg`: N/A — 큰 둥근 모서리는 쓰지 않는다
-- `--radius-full`: 쓰지 않는다(알약형 배지 금지)
+- 2px — 포커스 링
+- 4px — 아이콘 버튼, 툴팁, 입력창
+- 그 이상은 쓰지 않는다(알약형 배지 금지)
 
 ## 6. Elevation / shadow
 
@@ -97,77 +96,90 @@ Flat. 그림자는 쓰지 않고 선으로만 구분한다.
 
 ## 7. Motion
 
-- Vocabulary: `minimal`
-- 상태 변화(hover, 테마 전환): 200ms
-- 섹션 등장: 600ms, opacity 0→1 + translateY 8px→0, 한 번만 실행
-- Easing: `ease`
-- Allowed: fade, fade + 짧은 translate
-- Forbidden: bounce, 패럴랙스, 자동 재생 영상, 스크롤을 붙잡는 연출
-- `prefers-reduced-motion: reduce`이면 등장 애니메이션 없이 바로 보인다.
+GSAP 3.12.5 + ScrollTrigger(`site/vendor/`, self-host).
+
+| 장면 | 방식 | 값 |
+|---|---|---|
+| 첫 진입 | 히어로 단어가 차례로 떠오르고 문구가 따라옴 | `yPercent 60→0`, 0.8s, stagger 0.08, `power3.out` |
+| 히어로 스크롤 | 스크롤 연동(scrub), 첫 화면 고정 | 고정 구간 `+=70%`. "Software for" opacity → 0.14, "one." scale → 1.45 + 색이 `--text`에서 `--accent`로(`--p` 변수와 `color-mix`) |
+| 원칙 목록 등장 | 화면에 들어올 때 한 번 | `y 24→0`, 0.6s, stagger 0.06, `back.out(1.4)` |
+| 제품 목록 등장 | 화면에 들어올 때 한 번 | 위쪽 선이 `clip-path`로 그어지고 행이 왼쪽에서 들어옴 |
+| 아코디언 열기 | CSS transition | `grid-template-rows 0fr→1fr` 0.5s, 본문 페이드, `+` 45도 회전 |
+| hover·테마 전환 | CSS transition | 0.2–0.3s |
+
+- 공통 easing: `cubic-bezier(.2,.7,.2,1)`
+- 금지: 큰 bounce, 패럴랙스, 자동 재생 영상, 반복 재생되는 등장 연출
+- `prefers-reduced-motion: reduce`이면 GSAP 모션을 모두 끄고 transition도 없앤다.
+- 색은 GSAP에 직접 넣지 않는다. 테마를 바꿔도 따라가도록 CSS 변수로 섞는다.
 
 ## 7a. Container strategy
 
 - **Strategy**: `divider`
-- 섹션 사이: 1px `--color-border`
-- 표·목록·비교 블록의 시작: 2px `--color-rule-strong`
-- 블록 안 칸 나누기: 세로 1px `--color-border`
+- 섹션·목록의 시작: 2px `--rule-strong`
+- 행 사이: 1px `--rule`
 - 카드(배경이나 테두리로 감싼 박스)는 쓰지 않는다.
 
 ## 7b. Icon system
 
-- **Set**: `lucide` (필요할 때만)
-- **Weight**: `regular` (stroke 1.5)
-- **Treatment**: `monochrome`, `currentColor`
-- **Sizes**: 16 / 20px
-- 기본은 아이콘 없이 글자로 해결한다. CTA 끝의 `→`는 글자로 넣는다.
+- **Set**: `lucide`, inline SVG
+- **Stroke**: 1.5, round cap/join
+- **Size**: 20px 아이콘, 36px 클릭 영역
+- **Color**: `--text-2`, hover 시 `--accent`
+- **사용처**: 상단바에만 쓴다. Principles(book-open), Contact(mail), 테마 전환(moon / sun)
+- 아이콘만 있는 버튼에는 `aria-label`을 달고, 마우스 기기에서는 hover 시 같은 이름의 툴팁을 띄운다(`@media (hover: hover)`).
+- CTA 끝의 `→`, 아코디언의 `+`는 아이콘이 아니라 글자로 넣는다.
 
 ## 7c. Decoration
 
 | Surface | Gradients | Textures | Motifs |
 |---|---|---|---|
-| Marketing landing | none | none | 미정 — `oil-ui` 시안 단계에서 정한다 (§11) |
+| Marketing landing | none | none | none — 타이포그래피만 |
 
 ## 8. Component conventions
 
+### 상단바
+- sticky, 높이 60px, 아래 2px `--rule-strong`
+- 왼쪽: 로고 "olion.dev"(맨 위로 이동), 오른쪽: 아이콘 버튼 3개
+
 ### 링크 / CTA
-- 본문 링크: `--color-primary`, weight 600, 밑줄 없음. hover 시 `--color-primary-hover`
-- 주 CTA: 텍스트 링크 형태. `--color-primary`, 16px, weight 600, 끝에 `→`. 화살표가 누를 수 있다는 신호이므로 빼지 않는다.
-- 꽉 찬 색 버튼은 쓰지 않는다.
-- 포커스: `2px solid --color-primary` outline, offset 3px, radius 2px
+- 링크: `--accent`, weight 600, 밑줄 없음. hover 시 `--accent-hover`
+- CTA: 텍스트 링크, 끝에 `→`. 꽉 찬 색 버튼은 쓰지 않는다.
+- 포커스: `2px solid --accent` outline, offset 3px, radius 2px
+- 연락처: `hello@olion.dev` (소식 받기도 메일 링크)
 
-### 작은 버튼 (테마 전환 등)
-- 배경 없음, 1px `--color-border`, 글자 `--color-text-secondary`, 13px, padding 4px 10px, radius 4px
-- hover: 글자와 테두리를 `--color-text`로
+### 아코디언 (원칙)
+- 행: 번호 | 제목 | `+`. 버튼 전체가 클릭 영역, `aria-expanded`와 `aria-controls`
+- 한 번에 하나만 열린다. 처음에는 00이 열려 있다.
+- 열린 행: 제목·번호·`+`가 `--accent`, `+`는 45도 회전해 `×`
+- 닫힌 패널은 `inert`로 포커스에서 뺀다.
+- `?open=N`으로 특정 원칙을 연 상태로 열 수 있다.
+- 오해 방지 문장(`p.not`): 본문 아래 1px 선, 15px `--muted`, 앞부분 굵게
 
-### Inputs
-- 이메일 수집 폼을 붙일 때: 배경 없음, 1px `--color-border` 테두리, radius 4px, 16px 글자, padding 12px
-- focus: 테두리 `--color-text` + 포커스 링
-- error: 테두리 `--color-error` + 입력창 아래 오류 문구(무엇이 문제인지와 고치는 방법)
+### 제품 목록
+- 이름(22px 700) + 한 줄 설명(14px `--text-2`) | 오른쪽에 "Coming soon"(13px `--muted`)
+
+### Inputs (아직 없음)
+- 이메일 수집 폼을 붙일 때: 배경 없음, 1px `--rule` 테두리, radius 4px, 16px 글자, padding 12px
+- focus: 테두리 `--text` + 포커스 링, error: 테두리 error 색 + 입력창 아래 오류 문구
 - 성공·실패·전송 중 상태를 모두 정의한 뒤 붙인다.
-
-### "준비중" 표시
-- `--color-text-muted`, 13px, 배경·테두리 없는 글자. 이탤릭 금지.
-
-### Cards
-쓰지 않는다. 묶음은 §7a의 선으로 표현한다.
 
 ## 9. Surfaces
 
-- **Marketing landing**: 위 규칙을 지킨다. 섹션 구성, 첫 화면 구성, 주 시각 요소는 `oil-ui`로 2–3개 방향을 비교해 정한다.
-- Dashboard / Form / Long-form content: N/A — 아직 없는 화면이다.
+- **Landing** (`site/index.html`): 상단바 → 히어로("Software for one." + 문구 + Get updates) → Principles 아코디언 00–06 → What we're making → 푸터(© 2026 olion.dev, hello@olion.dev)
+- 그 밖의 화면: 아직 없다.
 
 ## 10. Anti-patterns for this project
 
-- 제품 이름, 스크린샷, 기능 상세를 노출하지 않는다.
+- 제품 스크린샷, 기능 상세, 출시일 약속
 - 카드 격자, 그림자, 둥근 알약형 배지
 - 밑줄, 이탤릭, 명조
 - 강조색으로 넓은 면을 칠하거나 강조색을 하나 더 추가하기
 - 그라데이션 배경, 3D 일러스트, 흔한 "AI" 연출(빛나는 구체, 반짝이 아이콘)
-- "AI가 다 해드립니다" 같은 과장 문구. 실제 제품에서 맡기는 일은 계산·정리·기억 같은 구체적인 일로 쓴다.
+- 긴 설명 문단. 원칙 하나는 3–4문장 안에서 끝낸다.
+- 외부 CDN에 의존하는 글꼴·스크립트
 
 ## 11. Open questions
 
-- 랜딩의 섹션 구성과 첫 화면 시각 요소(이미지·일러스트·타이포만) — `oil-ui` 단계
-- 섹션 제목과 문구 확정
-- 소식 받기 방식: 지금은 hi@olion.dev 메일 링크. 이메일 수집 폼을 둘지
-- 로고: 지금은 Pretendard 800 글자 "olion"
+- 소식 받기: 지금은 hello@olion.dev 메일 링크. 이메일 수집 폼을 둘지
+- 제품 이름 "Backtest"의 상표·검색 구분 문제
+- 배포: Cloudflare(`cf` CLI)로 `site/`를 올리는 설정
