@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>olion — 나눠 들기</title>
+<style>
+  @font-face { font-family: "Pretendard"; src: url("fonts/PretendardVariable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+  :root {
+    --bg: #fbfaf7; --text: #161513; --text-2: #5e5a53; --muted: #757068;
+    --rule-strong: #161513; --rule: #d8d3c9; --accent: #a3301f;
+    --pad: 40px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: "Pretendard", system-ui, sans-serif; line-height: 1.6; word-break: keep-all; }
+  a { color: var(--accent); text-decoration: none; font-weight: 600; }
+
+  .nav { display: flex; justify-content: space-between; align-items: center; height: 56px; padding: 0 var(--pad); border-bottom: 2px solid var(--rule-strong); }
+  .logo { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
+  .nav a { font-size: 14px; }
+
+  /* 좌우 = 두 사람의 몫. 가운데 세로선이 화면 전체를 가른다 */
+  .split { display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 56px); }
+  .side { padding: 48px var(--pad) 40px; display: flex; flex-direction: column; }
+  .side + .side { border-left: 2px solid var(--rule-strong); }
+  .who { font-size: 13px; font-weight: 700; letter-spacing: .06em; margin-bottom: 20px; }
+  .side.olion .who { color: var(--accent); }
+  .side h1 { font-size: clamp(32px, 4vw, 54px); line-height: 1.18; font-weight: 750; letter-spacing: -0.035em; margin-bottom: 36px; }
+  .side.olion h1 { color: var(--text-2); font-weight: 500; }
+  .hint { font-size: 14px; color: var(--muted); margin-bottom: 12px; }
+
+  .tasks { list-style: none; border-top: 2px solid var(--rule-strong); }
+  .task { display: flex; justify-content: space-between; align-items: center; gap: 16px; width: 100%; padding: 16px 0; border: 0; border-bottom: 1px solid var(--rule); background: none; font: inherit; font-size: 18px; color: var(--text); text-align: left; cursor: pointer; }
+  .task .go { font-size: 13px; font-weight: 600; color: var(--accent); white-space: nowrap; }
+  .task.keep { cursor: default; font-weight: 650; }
+  .task.keep .go { color: var(--muted); font-weight: 500; }
+  .task:not(.keep):hover .go { opacity: .75; }
+  .olion .tasks .task { color: var(--text-2); cursor: default; font-size: 16px; }
+  .empty { padding: 16px 0; font-size: 15px; color: var(--muted); border-bottom: 1px solid var(--rule); }
+  .moved { animation: land .45s ease both; }
+  @keyframes land { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .moved { animation: none; } }
+
+  .foot { margin-top: auto; padding-top: 40px; display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+  .foot p { font-size: 15px; color: var(--text-2); }
+
+  .soon { padding: 64px var(--pad) 96px; border-top: 1px solid var(--rule); display: grid; grid-template-columns: 1fr 1fr; }
+  .soon h2 { font-size: 13px; font-weight: 700; letter-spacing: .06em; color: var(--muted); }
+  .soon ul { list-style: none; border-top: 2px solid var(--rule-strong); }
+  .soon li { display: flex; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid var(--rule); font-size: 18px; font-weight: 600; }
+  .soon li span { font-size: 13px; font-weight: 500; color: var(--muted); }
+
+  @media (max-width: 860px) {
+    :root { --pad: 16px; }
+    .split { grid-template-columns: 1fr; min-height: auto; }
+    .side { padding: 32px var(--pad); }
+    .side + .side { border-left: 0; border-top: 2px solid var(--rule-strong); }
+    .side h1 { margin-bottom: 24px; }
+    .soon { grid-template-columns: 1fr; padding: 48px var(--pad) 64px; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+<header class="nav"><span class="logo">olion</span><a href="#contact">문의하기</a></header>
+
+<main>
+  <section class="split">
+    <div class="side you">
+      <p class="who">당신</p>
+      <h1>좋아하는 일엔<br>더 오래</h1>
+      <p class="hint">귀찮은 일을 눌러서 olion에게 넘겨보세요.</p>
+      <ul class="tasks" id="mine">
+        <li><button class="task keep" type="button" disabled>원두 고르고 커피 내리기<span class="go">직접 할게요</span></button></li>
+        <li><button class="task" type="button" data-t="물 비율 계산하기">물 비율 계산하기<span class="go">맡기기 →</span></button></li>
+        <li><button class="task keep" type="button" disabled>투자 규칙 정하기<span class="go">직접 할게요</span></button></li>
+        <li><button class="task" type="button" data-t="지난 시세로 규칙 검증하기">지난 시세로 규칙 검증하기<span class="go">맡기기 →</span></button></li>
+        <li><button class="task keep" type="button" disabled>살고 싶은 동네 걸어보기<span class="go">직접 할게요</span></button></li>
+        <li><button class="task" type="button" data-t="실거래가 정리하기">실거래가 정리하기<span class="go">맡기기 →</span></button></li>
+      </ul>
+      <div class="foot"><p>한 사람을 위한 소프트웨어</p></div>
+    </div>
+    <div class="side olion">
+      <p class="who">olion</p>
+      <h1>귀찮은 일은<br>맡기세요</h1>
+      <p class="hint">넘겨받은 일</p>
+      <ul class="tasks" id="theirs"><li class="empty" id="empty">아직 넘겨받은 일이 없어요</li></ul>
+      <div class="foot"><p>준비되면 가장 먼저 알려드릴게요.</p><a href="#contact">소식 받아보기 →</a></div>
+    </div>
+  </section>
+
+  <section class="soon">
+    <h2>만들고 있는 것들</h2>
+    <ul>
+      <li>매일의 한 잔<span>준비중</span></li>
+      <li>내 돈의 규칙<span>준비중</span></li>
+      <li>내가 살 집<span>준비중</span></li>
+    </ul>
+  </section>
+</main>
+
+<script>
+  const theirs = document.getElementById('theirs');
+  const empty = document.getElementById('empty');
+  document.querySelectorAll('#mine .task:not(.keep)').forEach(btn => {
+    btn.addEventListener('click', () => {
+      empty && empty.remove();
+      const li = document.createElement('li');
+      li.innerHTML = '<span class="task moved"></span>';
+      li.firstChild.textContent = btn.dataset.t;
+      theirs.appendChild(li);
+      btn.closest('li').remove();
+    });
+  });
+  if (new URLSearchParams(location.search).get('state') === 'done') {
+    document.querySelectorAll('#mine .task:not(.keep)').forEach(b => b.click());
+  }
+</script>
+</body>
+</html>

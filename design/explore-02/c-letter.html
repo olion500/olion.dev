@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>olion — 편지</title>
+<style>
+  @font-face { font-family: "Pretendard"; src: url("fonts/PretendardVariable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+  :root {
+    --bg: #fbfaf7; --text: #161513; --text-2: #5e5a53; --muted: #757068;
+    --rule-strong: #161513; --rule: #d8d3c9; --accent: #a3301f;
+    --pad: 40px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: "Pretendard", system-ui, sans-serif; line-height: 1.75; word-break: keep-all; }
+  a { color: var(--accent); text-decoration: none; font-weight: 600; }
+
+  .nav { position: fixed; inset: 0 0 auto 0; display: flex; justify-content: space-between; align-items: center; height: 56px; padding: 0 var(--pad); background: var(--bg); z-index: 2; }
+  .logo { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
+  .nav a { font-size: 14px; }
+
+  /* 왼쪽 끝 세로 띠: 한 사람을 위한 소프트웨어 */
+  .spine { position: fixed; left: var(--pad); top: 96px; bottom: 40px; display: flex; align-items: flex-start; gap: 16px; }
+  .spine span { writing-mode: vertical-rl; font-size: 13px; font-weight: 600; letter-spacing: .12em; color: var(--muted); }
+  .spine i { width: 2px; align-self: stretch; background: var(--rule-strong); }
+
+  /* 첫 화면 = 가운데 한 장의 편지 */
+  .letter { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 96px var(--pad) 64px; }
+  .paper { width: min(560px, 100%); }
+  .to { font-size: 15px; color: var(--muted); margin-bottom: 28px; display: flex; align-items: baseline; gap: 2px; }
+  .name { font: inherit; font-size: 15px; font-weight: 700; color: var(--accent); background: none; border: 1px solid var(--rule); border-radius: 4px; width: 6.5em; padding: 2px 8px; margin-right: 4px; outline: none; }
+  .name:focus { border-color: var(--text); }
+  .paper h1 { font-size: clamp(32px, 4.2vw, 46px); line-height: 1.28; font-weight: 750; letter-spacing: -0.03em; margin-bottom: 28px; }
+  .paper h1 .who { color: var(--accent); }
+  .paper p { font-size: 17px; color: var(--text-2); margin-bottom: 16px; }
+  .sign { display: flex; justify-content: space-between; align-items: baseline; margin-top: 40px; padding-top: 16px; border-top: 2px solid var(--rule-strong); font-size: 15px; }
+  .sign b { font-weight: 700; }
+
+  /* 추신 */
+  .ps { padding: 32px var(--pad) 120px; display: flex; justify-content: center; }
+  .ps .inner { width: min(560px, 100%); }
+  .ps h2 { font-size: 13px; font-weight: 700; letter-spacing: .06em; color: var(--muted); margin-bottom: 12px; }
+  .ps-item { padding: 20px 0; border-top: 1px solid var(--rule); }
+  .ps-item:first-of-type { border-top: 2px solid var(--rule-strong); }
+  .ps-item b { display: block; font-size: 13px; font-weight: 700; color: var(--accent); letter-spacing: .04em; margin-bottom: 6px; }
+  .ps-item p { font-size: 17px; }
+  .ps-item p .you { font-weight: 650; }
+  .soon { margin-top: 64px; }
+  .soon li { list-style: none; display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--rule); font-size: 17px; font-weight: 600; }
+  .soon li:first-child { border-top: 2px solid var(--rule-strong); }
+  .soon li span { font-size: 13px; font-weight: 500; color: var(--muted); }
+
+  @media (max-width: 720px) {
+    :root { --pad: 16px; }
+    .spine { display: none; }
+    .letter { align-items: flex-start; padding-top: 112px; min-height: auto; }
+    .paper p, .ps-item p { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+<header class="nav"><span class="logo">olion</span><a href="#contact">문의하기</a></header>
+<div class="spine" aria-hidden="true"><i></i><span>한 사람을 위한 소프트웨어</span></div>
+
+<main>
+  <section class="letter">
+    <div class="paper">
+      <label class="to"><input class="name" id="name" value="당신" aria-label="받는 사람 이름" maxlength="10"><span id="suffix">에게</span></label>
+      <h1>좋아하는 일엔 더 오래 머무르세요. 귀찮은 일은 저희가 맡을게요.</h1>
+      <p>olion은 많은 사람이 아니라 <span class="who-text">당신</span> 한 사람의 하루를 보고 도구를 만듭니다. 커피를 내리는 손, 동네를 걷는 발걸음은 그대로 두고, 그 사이의 계산과 정리만 가져갈게요.</p>
+      <div class="sign"><a href="#contact">답장하고 소식 받기 →</a><b>olion 드림</b></div>
+    </div>
+  </section>
+
+  <section class="ps">
+    <div class="inner">
+      <h2>추신</h2>
+      <div class="ps-item"><b>커피</b><p><span class="you">원두를 고르고 맛을 보는 건 <span class="who-text">당신</span>이,</span> 물 비율과 타이머, 지난번 설정은 저희가.</p></div>
+      <div class="ps-item"><b>돈</b><p><span class="you">투자 규칙을 정하는 건 <span class="who-text">당신</span>이,</span> 시세를 모으고 규칙을 검증하는 건 저희가.</p></div>
+      <div class="ps-item"><b>집</b><p><span class="you">동네를 직접 걸어보는 건 <span class="who-text">당신</span>이,</span> 실거래가와 학군 정리는 저희가.</p></div>
+
+      <ul class="soon">
+        <li>다음 편지에 담을 것 · 매일의 한 잔<span>준비중</span></li>
+        <li>다음 편지에 담을 것 · 내 돈의 규칙<span>준비중</span></li>
+        <li>다음 편지에 담을 것 · 내가 살 집<span>준비중</span></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<script>
+  const input = document.getElementById('name');
+  const targets = document.querySelectorAll('.who-text');
+  const suffix = document.getElementById('suffix');
+  const sync = () => { const v = input.value.trim(); const named = v && v !== '당신'; targets.forEach(t => t.textContent = named ? v + '님' : '당신'); suffix.textContent = named ? '님께' : '에게'; };
+  input.addEventListener('input', sync);
+</script>
+</body>
+</html>

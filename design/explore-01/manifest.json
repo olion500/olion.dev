@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "lang": "zh",
+  "project": "olion 랜딩페이지",
+  "brief": "한 사람을 위한 소프트웨어. 좋아하는 일엔 더 오래, 귀찮은 일은 맡기세요. 커피·돈·집 예시로 '당신이 하는 일 / 맡겨도 되는 일'을 나누고, 제품은 모두 준비중. 주 동작은 소식 받기(메일).",
+  "round": "01",
+  "candidates": [
+    {
+      "id": "a-day",
+      "name": "하루 일과표",
+      "concept": "한 사람의 하루를 일과표로 펼치고, 좋아하는 일은 넓게, 맡길 일은 얇게 접어 보여준다",
+      "typography": "Pretendard 750 68px 제목 / 650 24px 내가 하는 일 / 400 14px 맡길 일 — 같은 표 안에서 크기 차이로 비중을 보여줌",
+      "palette": ["#fbfaf7", "#161513", "#757068", "#a3301f"],
+      "traits": ["첫 화면이 곧 시간표", "행 높이로 비중 표현", "빨강은 '맡김' 표시에만"],
+      "kind": "html",
+      "source": "a-day.html"
+    },
+    {
+      "id": "b-ledger",
+      "name": "장부",
+      "concept": "화면을 꽉 채운 '한 사람을 위한 소프트웨어' 한 문장, 그 아래 당신의 몫과 맡길 몫을 나눈 장부",
+      "typography": "Pretendard 820 17vw 초대형 문장 / 650 28px 메인 카피 / 600 22px 장부 내용 — 극단적인 크기 대비",
+      "palette": ["#fbfaf7", "#161513", "#d8d3c9", "#a3301f"],
+      "traits": ["글자 자체가 첫 화면", "'소프트웨어'는 선 색으로 물러남", "두 칸 장부 표"],
+      "kind": "html",
+      "source": "b-ledger.html"
+    },
+    {
+      "id": "c-letter",
+      "name": "편지",
+      "concept": "넓은 여백 가운데 한 사람에게 쓴 편지 한 장, 이름을 넣으면 페이지 전체가 그 사람에게 말한다",
+      "typography": "Pretendard 750 46px 편지 첫 문장 / 400 17px 본문 / 세로쓰기 13px 띠",
+      "palette": ["#fbfaf7", "#161513", "#5e5a53", "#a3301f"],
+      "traits": ["가운데 좁은 편지 한 장", "이름 입력 시 '당신'이 그 이름으로 바뀜", "추신으로 커피·돈·집 설명"],
+      "kind": "html",
+      "source": "c-letter.html",
+      "interactive": true
+    }
+  ]
+}

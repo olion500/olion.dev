@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "oil-motion": {
+      "source": "oil-oil/oil-motion",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "c31745d171ab550660f29ce65550222b47ee97c81b16d908339ea94199fa9489"
+    },
+    "oil-ui": {
+      "source": "oil-oil/oil-ui",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "ee1627d89e6637fdb7805e15a2f842d468741878ee6dbc0d53548bceb4d64a78"
+    },
+    "oiloil-ui-ux-guide": {
+      "source": "oil-oil/ui-ux-guide",
+      "sourceType": "github",
+      "skillPath": "skills/oiloil-ui-ux-guide/SKILL.md",
+      "computedHash": "e877fde89f160270fab6c0286f7d9309953142821cbb97b7690bfe2cd0046d85"
+    }
+  }
+}

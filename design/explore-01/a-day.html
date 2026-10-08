@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>olion — 하루</title>
+<style>
+  @font-face { font-family: "Pretendard"; src: url("fonts/PretendardVariable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+  :root {
+    --bg: #fbfaf7; --text: #161513; --text-2: #5e5a53; --muted: #757068;
+    --rule-strong: #161513; --rule: #d8d3c9; --accent: #a3301f;
+    --pad: 40px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: "Pretendard", system-ui, sans-serif; line-height: 1.6; word-break: keep-all; }
+  a { color: var(--accent); text-decoration: none; font-weight: 600; }
+
+  .nav { display: flex; justify-content: space-between; align-items: center; height: 56px; padding: 0 var(--pad); border-bottom: 2px solid var(--rule-strong); }
+  .logo { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
+  .nav a { font-size: 14px; }
+
+  /* 첫 화면 = 한 사람의 하루 일과표 */
+  .day { min-height: calc(100vh - 56px); display: grid; grid-template-rows: auto 1fr; padding: 0 var(--pad); }
+  .day-head { display: grid; grid-template-columns: 96px 1fr auto; align-items: end; gap: 0 24px; padding: 32px 0 24px; border-bottom: 2px solid var(--rule-strong); }
+  .day-head .date { font-size: 13px; font-weight: 600; color: var(--muted); letter-spacing: .04em; padding-bottom: 10px; }
+  .day-head h1 { font-size: clamp(36px, 5.2vw, 68px); line-height: 1.12; font-weight: 750; letter-spacing: -0.035em; }
+  .day-head .legend { font-size: 13px; color: var(--text-2); text-align: right; padding-bottom: 10px; line-height: 1.9; }
+  .legend b { font-weight: 700; color: var(--text); }
+  .legend .give { color: var(--accent); }
+
+  .rows { display: flex; flex-direction: column; }
+  .row { display: grid; grid-template-columns: 96px 1fr 120px; gap: 0 24px; align-items: center; border-bottom: 1px solid var(--rule); }
+  .row .t { font-size: 14px; font-weight: 500; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .row .who { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-align: right; }
+
+  /* 당신이 하는 일: 칸이 넓고 글자가 크다 */
+  .row.mine { flex: 3; min-height: 72px; }
+  .row.mine .what { font-size: 24px; font-weight: 650; letter-spacing: -0.02em; }
+  .row.mine .who { color: var(--text); }
+
+  /* 맡겨도 되는 일: 얇게 접혀 있다 */
+  .row.give { flex: 1; min-height: 34px; }
+  .row.give .what { font-size: 14px; color: var(--muted); }
+  .row.give .who { color: var(--accent); }
+
+  .after { padding: 96px var(--pad) 64px; display: grid; grid-template-columns: 96px 1fr; gap: 0 24px; }
+  .after .lbl { font-size: 13px; font-weight: 600; color: var(--muted); padding-top: 6px; }
+  .after p.lead { font-size: 20px; color: var(--text-2); max-width: 30em; margin-bottom: 40px; }
+  .list { border-top: 2px solid var(--rule-strong); max-width: 760px; }
+  .item { display: flex; justify-content: space-between; align-items: baseline; padding: 18px 0; border-bottom: 1px solid var(--rule); }
+  .item b { font-size: 18px; font-weight: 600; }
+  .item span { font-size: 13px; color: var(--muted); }
+  .cta { display: inline-block; margin-top: 40px; font-size: 17px; }
+
+  @media (max-width: 720px) {
+    :root { --pad: 16px; }
+    .day-head { grid-template-columns: 1fr; padding: 24px 0 16px; }
+    .day-head .date { padding-bottom: 8px; }
+    .day-head .legend { text-align: left; padding: 12px 0 0; }
+    .row { grid-template-columns: 52px 1fr auto; gap: 0 12px; }
+    .row.mine .what { font-size: 18px; }
+    .row.mine { min-height: 60px; }
+    .row.give .what { font-size: 13px; }
+    .after { grid-template-columns: 1fr; padding: 64px var(--pad) 48px; }
+    .day { min-height: auto; }
+    .row.mine { min-height: 76px; }
+    .after .lbl { padding: 0 0 12px; }
+    .after p.lead { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+<header class="nav"><span class="logo">olion</span><a href="#contact">문의하기</a></header>
+
+<main>
+  <section class="day">
+    <div class="day-head">
+      <span class="date">어느 수요일</span>
+      <h1>좋아하는 일엔 더 오래,<br>귀찮은 일은 맡기세요</h1>
+      <p class="legend"><b>당신</b> 직접 하는 일<br><span class="give">맡김</span> olion이 덜어주는 일</p>
+    </div>
+    <div class="rows">
+      <div class="row mine"><span class="t">07:30</span><span class="what">원두를 고르고 천천히 커피 내리기</span><span class="who">당신</span></div>
+      <div class="row give"><span class="t">07:31</span><span class="what">물 비율 계산, 단계별 타이머, 지난번 설정 찾기</span><span class="who">맡김</span></div>
+      <div class="row give"><span class="t">12:10</span><span class="what">시세 모으기, 지난 데이터로 투자 규칙 검증하기</span><span class="who">맡김</span></div>
+      <div class="row mine"><span class="t">19:20</span><span class="what">살고 싶은 동네를 직접 걸어보기</span><span class="who">당신</span></div>
+      <div class="row give"><span class="t">19:21</span><span class="what">실거래가 정리, 학군과 교통 비교</span><span class="who">맡김</span></div>
+      <div class="row mine"><span class="t">22:00</span><span class="what">오늘의 한 잔이 어땠는지 떠올리기</span><span class="who">당신</span></div>
+    </div>
+  </section>
+
+  <section class="after">
+    <span class="lbl">olion</span>
+    <div>
+      <p class="lead">한 사람의 하루에 맞춰 도구를 만듭니다. 즐거운 시간은 그대로 두고, 번거로운 시간만 줄여요.</p>
+      <div class="list">
+        <div class="item"><b>매일의 한 잔</b><span>준비중</span></div>
+        <div class="item"><b>내 돈의 규칙</b><span>준비중</span></div>
+        <div class="item"><b>내가 살 집</b><span>준비중</span></div>
+      </div>
+      <a class="cta" href="#contact">준비되면 알려주세요 →</a>
+    </div>
+  </section>
+</main>
+</body>
+</html>
