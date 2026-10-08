@@ -5,7 +5,7 @@ export default defineConfig({
 	worker: {
 		name: "olion-dev",
 		compatibilityDate: "2026-10-01",
-		domains: ["olion.dev"],
+		domains: ["olion.dev", "www.olion.dev"],
 		assets: {
 			htmlHandling: "auto-trailing-slash",
 			notFoundHandling: "none",
