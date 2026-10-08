@@ -2,13 +2,13 @@
 
 > `oiloil-ui-ux-guide`의 `design` 상담과 `oil-ui` 시안 작업으로 정했다 (2026-10-08).
 > Style family: `editorial` 기반, 글꼴은 Pretendard 하나만 쓴다.
-> 구현: `site/index.html`
+> 구현: `site/index.html`(템플릿) + `PRINCIPLES.md`(원칙 원문) → `npm run build` → `dist/`
 
 ## 1. Design direction
 
 - **Product**: olion.dev 회사 랜딩페이지. 회사가 일하는 원칙을 보여주고, 소식을 받을 사람을 모은다.
 - **Concept**: "Software for one." — 한 번에 한 사람을 위한 소프트웨어. 메인 카피는 "More time for what you love. Leave the chores to us."
-- **Structure**: 37signals처럼 원칙 목록이 페이지의 중심이다. 원칙은 번호 붙은 아코디언(00–06)으로 보여준다.
+- **Structure**: 37signals처럼 원칙 목록이 페이지의 중심이다. 원칙은 번호 붙은 아코디언(00–06)으로 보여준다. 원문은 `PRINCIPLES.md`에서 고치고, 빌드가 HTML로 넣는다.
 - **Products**: 이름만 공개하고 모두 "Coming soon"으로 표시한다. 스크린샷과 기능 상세는 보여주지 않는다.
   - A Little Brew — For your morning cup
   - Backtest — For your money rules
@@ -51,7 +51,7 @@
 
 | Role | Font | Weights | Source |
 |---|---|---|---|
-| 전체 | Pretendard Variable | 400–800 | `site/fonts/PretendardVariable.woff2` (self-host, pretendard@1.3.9) |
+| 전체 | Pretendard Variable | 400–800 | `site/fonts/pretendard-latin.woff2` (self-host, pretendard@1.3.9을 Latin만 남겨 21KB로 줄임. 다른 글자를 쓰면 `scripts/subset-font.sh`를 다시 돌린다) |
 
 - **이탤릭 금지.** 강조는 굵기와 색으로만 한다.
 - **밑줄 금지.** 링크도 밑줄 없이 강조색 글자로 표시한다.
@@ -96,21 +96,22 @@ Flat. 그림자는 쓰지 않고 선으로만 구분한다.
 
 ## 7. Motion
 
-GSAP 3.12.5 + ScrollTrigger(`site/vendor/`, self-host).
+라이브러리 없이 CSS + 짧은 inline JS로 만든다. `html.motion` 클래스가 있을 때만(=JS 켜짐, 동작 줄이기 꺼짐) 숨김·등장 상태를 건다.
 
 | 장면 | 방식 | 값 |
 |---|---|---|
-| 첫 진입 | 히어로 단어가 차례로 떠오르고 문구가 따라옴 | `yPercent 60→0`, 0.8s, stagger 0.08, `power3.out` |
-| 히어로 스크롤 | 스크롤 연동(scrub), 첫 화면 고정 | 고정 구간 `+=70%`. "Software for" opacity → 0.14, "one." scale → 1.45 + 색이 `--text`에서 `--accent`로(`--p` 변수와 `color-mix`) |
-| 원칙 목록 등장 | 화면에 들어올 때 한 번 | `y 24→0`, 0.6s, stagger 0.06, `back.out(1.4)` |
+| 첫 진입 | 히어로 단어가 차례로 떠오르고 문구가 따라옴 | CSS `@keyframes`, `translate 0 60%→0`, 0.8s, 단어마다 80ms 지연 |
+| 히어로 스크롤 | 스크롤 연동, `position: sticky`로 첫 화면 고정 | 고정 구간 70vh. JS가 스크롤 위치를 `--s`(0–1)로 쓰고 매 프레임 18%씩 따라감. "Software for" opacity → 0.14, "one." `scale` → 1.45 + 색이 `--text`에서 `--accent`로(`color-mix`) |
+| 원칙 목록 등장 | IntersectionObserver, 한 번 | `translate 24px→0`, 0.6s, 행마다 60ms, `cubic-bezier(.34,1.4,.64,1)` |
 | 제품 목록 등장 | 화면에 들어올 때 한 번 | 위쪽 선이 `clip-path`로 그어지고 행이 왼쪽에서 들어옴 |
 | 아코디언 열기 | CSS transition | `grid-template-rows 0fr→1fr` 0.5s, 본문 페이드, `+` 45도 회전 |
 | hover·테마 전환 | CSS transition | 0.2–0.3s |
 
 - 공통 easing: `cubic-bezier(.2,.7,.2,1)`
 - 금지: 큰 bounce, 패럴랙스, 자동 재생 영상, 반복 재생되는 등장 연출
-- `prefers-reduced-motion: reduce`이면 GSAP 모션을 모두 끄고 transition도 없앤다.
-- 색은 GSAP에 직접 넣지 않는다. 테마를 바꿔도 따라가도록 CSS 변수로 섞는다.
+- `prefers-reduced-motion: reduce`이면 모션을 모두 끄고, 히어로 고정도 풀고, transition도 없앤다.
+- 색은 JS로 직접 넣지 않는다. 테마를 바꿔도 따라가도록 CSS 변수로 섞는다.
+- 진입 애니메이션은 `translate`, 스크롤 확대는 `scale` 속성으로 나눠서 서로 덮어쓰지 않게 한다.
 
 ## 7a. Container strategy
 
@@ -153,7 +154,7 @@ GSAP 3.12.5 + ScrollTrigger(`site/vendor/`, self-host).
 - 열린 행: 제목·번호·`+`가 `--accent`, `+`는 45도 회전해 `×`
 - 닫힌 패널은 `inert`로 포커스에서 뺀다.
 - `?open=N`으로 특정 원칙을 연 상태로 열 수 있다.
-- 오해 방지 문장(`p.not`): 본문 아래 1px 선, 15px `--muted`, 앞부분 굵게
+- 오해 방지 문장(`p.not`, 마크다운의 `>` 줄): 본문 아래 1px 선, 15px 650 `--text-2`
 
 ### 제품 목록
 - 이름(22px 700) + 한 줄 설명(14px `--text-2`) | 오른쪽에 "Coming soon"(13px `--muted`)
@@ -176,10 +177,10 @@ GSAP 3.12.5 + ScrollTrigger(`site/vendor/`, self-host).
 - 강조색으로 넓은 면을 칠하거나 강조색을 하나 더 추가하기
 - 그라데이션 배경, 3D 일러스트, 흔한 "AI" 연출(빛나는 구체, 반짝이 아이콘)
 - 긴 설명 문단. 원칙 하나는 3–4문장 안에서 끝낸다.
-- 외부 CDN에 의존하는 글꼴·스크립트
+- 외부 CDN에 의존하는 글꼴·스크립트, 무거운 애니메이션 라이브러리
 
 ## 11. Open questions
 
 - 소식 받기: 지금은 hello@olion.dev 메일 링크. 이메일 수집 폼을 둘지
 - 제품 이름 "Backtest"의 상표·검색 구분 문제
-- 배포: Cloudflare(`cf` CLI)로 `site/`를 올리는 설정
+- 커스텀 도메인 olion.dev 연결 (`make deploy`는 `olion-dev.<계정>.workers.dev`에 올린다)
