@@ -79,6 +79,11 @@
   .principles { padding: 96px 0; scroll-margin-top: 60px; }
   .label { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
   .acc { list-style: none; border-top: 2px solid var(--rule-strong); }
+  /* pinned mode (JS): the list sticks under the nav and scroll opens one principle per step */
+  .label .step { display: none; }
+  .acc-track.pinned .acc-pin { position: sticky; top: 84px; }
+  .acc-track.pinned .label { display: flex; justify-content: space-between; }
+  .acc-track.pinned .label .step { display: inline; color: var(--accent); font-variant-numeric: tabular-nums; }
   .acc > li { border-bottom: 1px solid var(--rule); }
   .row { display: grid; grid-template-columns: var(--num) 1fr auto; align-items: baseline; width: 100%; padding: 20px 0; background: none; border: 0; cursor: pointer; text-align: left; font: inherit; color: var(--text); font-weight: 700; font-size: clamp(24px, 3.2vw, 40px); letter-spacing: -0.035em; line-height: 1.2; transition: color .25s; }
   .row .n { font-size: 15px; font-weight: 600; color: var(--muted); letter-spacing: 0; font-variant-numeric: tabular-nums; transition: color .25s; }
@@ -167,10 +172,12 @@
   </div>
 
   <section class="principles" id="principles"><div class="wrap">
-    <p class="label">Principles</p>
-    <ol class="acc stagger reveal">
+    <div class="acc-track" id="acc-track"><div class="acc-pin">
+      <p class="label">Principles <span class="step" aria-hidden="true"></span></p>
+      <ol class="acc stagger reveal">
 <!-- @principles -->
-    </ol>
+      </ol>
+    </div></div>
   </div></section>
 
   <section id="contact"><div class="wrap">
@@ -209,14 +216,16 @@
 
   // accordion: one open at a time; ?open=N opens a given principle
   const items = [...document.querySelectorAll('.acc > li')];
+  let pinTo = null; // set when the list is pinned: clicks scroll to that principle's step instead
   const setOpen = (li, open) => {
     li.classList.toggle('open', open);
     li.querySelector('.row').setAttribute('aria-expanded', open);
     li.querySelector('.panel').inert = !open;
   };
-  items.forEach(li => {
+  items.forEach((li, i) => {
     setOpen(li, li.classList.contains('open'));
     li.querySelector('.row').addEventListener('click', () => {
+      if (pinTo) return pinTo(i);
       const willOpen = !li.classList.contains('open');
       items.forEach(o => setOpen(o, false));
       setOpen(li, willOpen);
@@ -231,6 +240,32 @@
       if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
     }), { rootMargin: '0px 0px -20% 0px' });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // principles: pin the list and open one principle per scroll step (only if it fits on screen)
+    const accTrack = document.getElementById('acc-track'), accPin = accTrack.firstElementChild;
+    const stepEl = accPin.querySelector('.step'), last = items.at(-1).querySelector('.n').textContent;
+    const STEP = 140, PIN_TOP = 84;
+    const trackStart = () => accTrack.getBoundingClientRect().top + scrollY - PIN_TOP;
+    const step = () => {
+      if (!pinTo) return;
+      const i = Math.min(items.length - 1, Math.max(0, Math.floor((scrollY - trackStart()) / STEP)));
+      stepEl.textContent = `${items[i].querySelector('.n').textContent} / ${last}`;
+      if (items.some((o, j) => o.classList.contains('open') !== (j === i))) items.forEach((o, j) => setOpen(o, j === i));
+    };
+    const layout = () => {
+      const open = items.find(li => li.classList.contains('open'));
+      const closed = accPin.offsetHeight - (open ? open.querySelector('.panel').offsetHeight : 0);
+      const tallest = Math.max(...items.map(li => li.querySelector('.inner').scrollHeight));
+      const fits = closed + tallest <= innerHeight - PIN_TOP;
+      pinTo = fits ? i => scrollTo({ top: trackStart() + i * STEP + 1, behavior: 'smooth' }) : null;
+      accTrack.classList.toggle('pinned', fits);
+      accTrack.style.height = fits ? `${closed + tallest + items.length * STEP}px` : '';
+      step();
+    };
+    addEventListener('scroll', step, { passive: true });
+    addEventListener('resize', layout);
+    document.fonts.ready.then(layout);
+    layout();
 
     // hero fallback for browsers without scroll-driven animations: scroll position -> --s (0..1)
     if (!CSS.supports('animation-timeline: view()')) {
